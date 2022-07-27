@@ -1,0 +1,97 @@
+<template>
+  <v-container>
+    <v-row justify="center" class="mt-7">
+      <v-col md="7" sm="5">
+        <h1 class="mt-6">Registrar nuevo Usuario</h1>
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-text-field
+            v-model="email"
+            :rules="emailRules"
+            label="Correo"
+            required
+          ></v-text-field>
+
+          <v-text-field
+            v-model="password"
+            :counter="6"
+            :rules="passwordRules"
+            label="Contraseña"
+            required
+            type="password"
+          ></v-text-field>
+
+          <v-btn
+            :disabled="!valid"
+            color="teal accent-3"
+            class="mr-4"
+            @click="register"
+          >
+            Registrar
+          </v-btn>
+
+          <v-btn color="error" class="mr-4" @click="reset"> Borrar</v-btn>
+        </v-form>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+export default {
+  name: "component-name",
+  // props: {},
+  data: function () {
+    return {
+      valid: true,
+      password: "",
+      passwordRules: [
+        (v) => !!v || "Debe ingresar si Contraseña",
+        (v) => (v && v.length <= 6) || "La contraseña debe tener 6 caracteres",
+      ],
+      email: "",
+      emailRules: [
+        (v) => !!v || "Debe ingresar su Correo electronico",
+        (v) => /.+@.+\..+/.test(v) || "El correo debe ser Valido",
+      ],
+    };
+  },
+  // computed: {},
+  methods: {
+    validate() {
+      this.$refs.form.validate();
+    },
+    reset() {
+      this.$refs.form.reset();
+    },
+    register() {
+      this.validate();
+      if (this.valid == false) return;
+      const auth = getAuth();
+      createUserWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          this.$router.push("/login");
+          // ...
+        })
+        .catch((error) => {
+          // const errorCode = error.code;
+          const errorMessage = error.message;
+          alert(errorMessage);
+          // ..
+        });
+    },
+  },
+  // watch: {},
+  // components: {},
+  // mixins: [],
+  // filters: {},
+  // -- Lifecycle Methods
+  // -- End Lifecycle Methods
+};
+</script>
+
+<style scoped>
+</style>
