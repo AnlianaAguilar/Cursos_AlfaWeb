@@ -62,6 +62,11 @@ export default {
           title: "Login",
           name: "login",
         },
+        {
+          icono: "mdi-home",
+          title: "Administración",
+          name: "administration",
+        },
       ],
     };
   },

@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import {getAuth} from 'firebase/auth'
 import RegisterView from '@/views/RegisterView.vue'
+import AdministrationView from '@/views/AdministrationView.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,14 @@ const routes = [
     path: '/register',
     name: 'register',
     component: RegisterView
+  },
+  {
+    path: '/administration',
+    name: 'administration',
+    component: AdministrationView,
+    meta:{
+      private:true
+    }
   },
   {
     path: '/about',
